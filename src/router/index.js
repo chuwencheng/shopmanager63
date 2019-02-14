@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import Router from 'vue-router'
 // import Login from '../components/login.vue'
 // webpack项目模板 提供@->自动找到src文件夹
