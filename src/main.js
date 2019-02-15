@@ -5,7 +5,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/base.css'
 import App from './App'
+import axios from 'axios'
+
 import router from './router'
+axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+Vue.prototype.$http = axios
 // ElementUI其实是vue插件，和vueRouter用法一样 vue.use(名)
 // vue 插件的使用
 Vue.use(ElementUI)
