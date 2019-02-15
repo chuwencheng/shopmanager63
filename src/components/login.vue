@@ -15,16 +15,32 @@
 
 <script>
 export default {
-    data(){
-        return {
-            formdata:{
-                username:'',
-                password:''
-            }
-        }
+  data () {
+    return {
+      formdata: {
+        username: '',
+        password: ''
+      }
     }
-};
+  }
+}
 </script>
 
 <style>
+.login-wrap {
+    height: 100%;
+    background-color:#324152;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-form {
+    background-color: #fff;
+    width: 400px;
+    border-radius: 5px;
+    padding: 30px;
+}
+.login-btn {
+    width: 100%;
+}
 </style>
