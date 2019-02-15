@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import '@/assets/css/base.css'
 import App from './App'
 import router from './router'
 // ElementUI其实是vue插件，和vueRouter用法一样 vue.use(名)
