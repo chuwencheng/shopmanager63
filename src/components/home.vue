@@ -32,7 +32,8 @@
                                 <i class="el-icon-location"></i>
                                 <span>用户管理</span>
                             </template>
-                            <el-menu-item index="/user">
+                            <!-- 1.<router-link></router-link> 改标识-->
+                            <el-menu-item index="/users">
                                 <i class="el-icon-menu"></i>
                                 用户列表
                             </el-menu-item>
@@ -97,7 +98,10 @@
                     </el-menu>
                 </el-aside>
             </el-aside>
-            <el-main class="main">Main</el-main>
+            <el-main class="main">
+                <!-- 2.提供容器 -->
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
