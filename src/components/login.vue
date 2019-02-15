@@ -15,38 +15,38 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       formdata: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       }
-    };
+    }
   },
   methods: {
     // 登录请求
-    async handlelogin() {
-      const res = await this.$http.post(`login`, this.formdata);
-      console.log(res);
+    async handlelogin () {
+      const res = await this.$http.post(`login`, this.formdata)
+      console.log(res)
       // 前提：api-server 必须是启动状态
       // console.log(res)
-      const { data: { data: { token }, meta: { msg, status } } } = res;
+      const { data: { data: { token }, meta: { msg, status } } } = res
 
       if (status === 200) {
         // 将token永久保存
-        localStorage.setItem("token", token);
+        localStorage.setItem('token', token)
 
         // 渲染home组件
         this.$router.push({
-          name: "home"
-        });
+          name: 'home'
+        })
       } else {
         // 用户名或密码错误
-        this.$message.error(msg);
+        this.$message.error(msg)
       }
     }
   }
-};
+}
 </script>
 
 <style>
