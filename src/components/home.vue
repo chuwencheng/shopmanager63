@@ -12,7 +12,7 @@
                     <h2>电商后台管理系统</h2>
                 </el-col>
                 <el-col :span="1">
-                    <a href="#" class="loginout">退出</a>
+                    <a href="#" @click.prevent="handleLoginout()" class="loginout">退出</a>
                 </el-col>
             </el-row>
         </el-header>
@@ -103,7 +103,29 @@
 </template>
 
 <script>
-export default {}
+export default {
+  // 登录权限，如果用户没有登录不能进入home.vue,显示login.vue
+  beforeMount () {
+    if (!localStorage.getItem('token')) {
+      this.$router.push({
+        name: 'login'
+      })
+    }
+  },
+  methods: {
+    // 退出
+    handleLoginout () {
+      // 1.清除token
+      localStorage.clear()
+      // 2.跳转到login
+      this.$router.push({
+        name: 'login'
+      })
+      // 提示
+      this.$message.warning('退出成功')
+    }
+  }
+}
 </script>
 
 <style>
