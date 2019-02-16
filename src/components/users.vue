@@ -46,7 +46,7 @@
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-                    <el-button @click="showMsgBox()" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+                    <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
                     <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
                 </template>
             </el-table-column>
@@ -103,14 +103,26 @@ export default {
   },
   methods: {
     // 点击删除图标，弹出确认框
-    showMsgBox () {
+    showMsgBox (user) {
+    //   console.log(user)
       this.$confirm('是否删除用户?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(() => {
-          this.$message.success('删除成功')
+        .then(async () => {
+          // 发送删除请求
+          const res = await this.$http.delete(`users/${user.id}`)
+          //   console.log(res)
+          const {meta: { msg, status }} = res.data
+          if (status === 200) {
+            // 提示框
+            this.$message.success(msg)
+            // 删除之后，默认显示第一页
+            this.pagenum = 1
+            // 重新刷新列表
+            this.getTableData()
+          }
         })
         .catch(() => {
           this.$message.info('已取消删除')
@@ -127,6 +139,7 @@ export default {
     },
     // 添加用户-展示对话框
     showDiaAddUser () {
+      this.formdata = {}
       this.dialogFormVisibleAdd = true
     },
     // 清空时获取所有用户
