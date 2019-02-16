@@ -39,7 +39,7 @@
             <el-table-column label="用户状态" width="120">
                 <!-- 前提：单元格内容是一个组件，不是prop的值 -->
                 <template slot-scope="scope">
-                    <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
+                    <el-switch @change="changeState(scope.row)" v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
                     </el-switch>
                 </template>
             </el-table-column>
@@ -121,6 +121,16 @@ export default {
     this.getTableData()
   },
   methods: {
+    // 修改用户状态
+    async changeState (user) {
+    //   console.log(user)
+      const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
+      //   console.log(res)
+      const {meta: {msg, status}} = res.data
+      if (status === 200) {
+        this.$message.success(msg)
+      }
+    },
     // 编辑-显示对话框
     showDiaEditUser (user) {
       this.dialogFormVisibleEdit = true
@@ -130,7 +140,7 @@ export default {
     async editUser () {
       const res = await this.$http.put(`users/${this.formdata.id}`, this.formdata)
       //   console.log(res)
-      const {meta: {msg, status}} = res.data
+      const {meta: {status}} = res.data
       if (status === 200) {
         // 关闭对话框
         this.dialogFormVisibleEdit = false
