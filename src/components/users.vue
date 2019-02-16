@@ -127,8 +127,16 @@ export default {
       this.formdata = user
     },
     // 编辑-发起请求
-    editUser () {
-
+    async editUser () {
+      const res = await this.$http.put(`users/${this.formdata.id}`, this.formdata)
+      //   console.log(res)
+      const {meta: {msg, status}} = res.data
+      if (status === 200) {
+        // 关闭对话框
+        this.dialogFormVisibleEdit = false
+        // 更新表格
+        this.getTableData()
+      }
     },
     // 点击删除图标，弹出确认框
     showMsgBox (user) {
