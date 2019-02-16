@@ -83,8 +83,8 @@ export default {
   data () {
     return {
       query: '',
-      pagenum: 2,
-      pagesize: 3,
+      pagenum: 1,
+      pagesize: 2,
       total: -1,
       list: [],
       // 对话框
@@ -140,12 +140,16 @@ export default {
           this.pagesize
         }`
       )
-      //   console.log(res)
-      const { data, meta: { status, msg } } = res.data
+
+      const data = res.data
+      const { meta: { msg, status } } = data
       if (status === 200) {
-        this.total = data.total
-        this.list = data.users
-        // console.log(this.list)
+        const { data: { users, total } } = data
+        this.list = users
+        // 获取总共多少条数据
+        this.total = total
+      } else {
+        this.$message.error(msg)
       }
     }
   }
