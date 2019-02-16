@@ -47,7 +47,7 @@
                 <template slot-scope="scope">
                     <el-button @click="showDiaEditUser(scope.row)" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
                     <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
-                    <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+                    <el-button @click="showDiaSetRole(scope.row)" type="success" icon="el-icon-check" circle size="mini" plain></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -93,6 +93,25 @@
                 <el-button type="primary" @click="editUser()">确 定</el-button>
             </div>
         </el-dialog>
+        <!-- 对话框 分配角色 -->
+        <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRole">
+            <el-form :model="formdata" label-width="80px">
+                <el-form-item label="用户名" >
+                   {{formdata.username}}
+                </el-form-item>
+                <el-form-item label="角色" >
+                    <el-select v-model="selectVal" placeholder="请选择角色名称">
+                        <el-option label="请选择" value="shanghai"></el-option>
+                        <!-- 其他5个选项 动态生成 -->
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisibleRole = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisibleRole = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-card>
 </template>
 
@@ -108,25 +127,35 @@ export default {
       // 对话框
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
+      dialogFormVisibleRole: false,
       // 表单
       formdata: {
         username: '',
         password: '',
         email: '',
         mobile: ''
-      }
+      },
+      // 下拉框使用的数据
+      selectVal: 1
     }
   },
   created () {
     this.getTableData()
   },
+
   methods: {
+    // 分配角色-显示对话框
+    showDiaSetRole () {
+      this.dialogFormVisibleRole = true
+    },
     // 修改用户状态
     async changeState (user) {
-    //   console.log(user)
-      const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
+      //   console.log(user)
+      const res = await this.$http.put(
+        `users/${user.id}/state/${user.mg_state}`
+      )
       //   console.log(res)
-      const {meta: {msg, status}} = res.data
+      const { meta: { msg, status } } = res.data
       if (status === 200) {
         this.$message.success(msg)
       }
@@ -138,9 +167,12 @@ export default {
     },
     // 编辑-发起请求
     async editUser () {
-      const res = await this.$http.put(`users/${this.formdata.id}`, this.formdata)
+      const res = await this.$http.put(
+        `users/${this.formdata.id}`,
+        this.formdata
+      )
       //   console.log(res)
-      const {meta: {status}} = res.data
+      const { meta: { status } } = res.data
       if (status === 200) {
         // 关闭对话框
         this.dialogFormVisibleEdit = false
@@ -160,7 +192,7 @@ export default {
           // 发送删除请求
           const res = await this.$http.delete(`users/${user.id}`)
           //   console.log(res)
-          const {meta: { msg, status }} = res.data
+          const { meta: { msg, status } } = res.data
           if (status === 200) {
             // 提示框
             this.$message.success(msg)
