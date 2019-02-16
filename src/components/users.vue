@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
-                    <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
+                    <el-button @click="showDiaEditUser()" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
                     <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
                     <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
                 </template>
@@ -55,7 +55,7 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6, 8]" :page-size="2" layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
         <!-- 对话框 添加用户对话框 -->
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisibleAdd">
+        <el-dialog title="添加用户" :visible.sync="dialogFormVisibleAdd">
             <el-form label-position="left" label-width="80px" :model="formdata">
                 <el-form-item label="用户名">
                     <el-input v-model="formdata.username"></el-input>
@@ -75,6 +75,24 @@
                 <el-button type="primary" @click="addUser()">确 定</el-button>
             </div>
         </el-dialog>
+        <!-- 对话框 编辑用户 -->
+        <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
+            <el-form label-position="left" label-width="80px" :model="formdata">
+                <el-form-item label="用户名">
+                    <el-input v-model="formdata.username"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="formdata.email"></el-input>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-input v-model="formdata.mobile"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
+                <el-button type="primary" @click="editUser()">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-card>
 </template>
 
@@ -89,6 +107,7 @@ export default {
       list: [],
       // 对话框
       dialogFormVisibleAdd: false,
+      dialogFormVisibleEdit: false,
       // 表单
       formdata: {
         username: '',
@@ -102,6 +121,14 @@ export default {
     this.getTableData()
   },
   methods: {
+    // 编辑-显示对话框
+    showDiaEditUser () {
+      this.dialogFormVisibleEdit = true
+    },
+    // 编辑-发起请求
+    editUser () {
+
+    },
     // 点击删除图标，弹出确认框
     showMsgBox (user) {
     //   console.log(user)
