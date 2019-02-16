@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
-                    <el-button @click="showDiaEditUser()" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
+                    <el-button @click="showDiaEditUser(scope.row)" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
                     <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
                     <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
                 </template>
@@ -79,7 +79,7 @@
         <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
             <el-form label-position="left" label-width="80px" :model="formdata">
                 <el-form-item label="用户名">
-                    <el-input v-model="formdata.username"></el-input>
+                    <el-input disabled v-model="formdata.username"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱">
                     <el-input v-model="formdata.email"></el-input>
@@ -122,8 +122,9 @@ export default {
   },
   methods: {
     // 编辑-显示对话框
-    showDiaEditUser () {
+    showDiaEditUser (user) {
       this.dialogFormVisibleEdit = true
+      this.formdata = user
     },
     // 编辑-发起请求
     editUser () {
@@ -131,7 +132,7 @@ export default {
     },
     // 点击删除图标，弹出确认框
     showMsgBox (user) {
-    //   console.log(user)
+      console.log(user)
       this.$confirm('是否删除用户?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
