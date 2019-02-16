@@ -46,7 +46,7 @@
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-                    <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+                    <el-button @click="showMsgBox()" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
                     <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
                 </template>
             </el-table-column>
@@ -102,6 +102,20 @@ export default {
     this.getTableData()
   },
   methods: {
+    // 点击删除图标，弹出确认框
+    showMsgBox () {
+      this.$confirm('是否删除用户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$message.success('删除成功')
+        })
+        .catch(() => {
+          this.$message.info('已取消删除')
+        })
+    },
     // 添加用户-发送请求
     async addUser () {
       // 获取表单数据
