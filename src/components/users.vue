@@ -150,7 +150,7 @@ export default {
     // 分配角色-修改角色
     async setRole () {
       const res = await this.$http.put(`users/${this.currUserId}/role`, {rid: this.selectVal})
-      console.log(res)
+      //   console.log(res)
       const {meta: {msg, status}} = res.data
       if (status === 200) {
         // 关闭对话框
@@ -174,7 +174,7 @@ export default {
       }
       // 获取当前用户的角色id
       const res2 = await this.$http.get(`users/${user.id}`)
-      //   console.log(res2)
+      // console.log(res2)
       this.selectVal = res2.data.data.rid
     },
     // 修改用户状态
