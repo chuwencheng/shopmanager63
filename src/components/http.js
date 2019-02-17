@@ -6,8 +6,20 @@ const httpSever = {}
 
 httpSever.install = function (Vue) {
   axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
-  const AUTH_TOKEN = localStorage.getItem('token')
-  axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
+
+  // 请求拦截器
+  axios.interceptors.request.use(function (config) {
+    // 发请求之前做些什么
+    // console.log(config)
+    if (config.url !== 'login') {
+      const AUTH_TOKEN = localStorage.getItem('token')
+      config.headers.common['Authorization'] = AUTH_TOKEN
+    }
+    return config
+  }, function (error) {
+    // 请求错误时做些什么
+    return Promise.reject(error)
+  })
 
   Vue.prototype.$http = axios
 }

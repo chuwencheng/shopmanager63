@@ -23,13 +23,13 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="200">
+            <!-- <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
                     <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
                     <el-button @click="setRights(scope.row)" type="success" icon="el-icon-check" circle size="mini" plain></el-button>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
     </el-card>
 </template>
