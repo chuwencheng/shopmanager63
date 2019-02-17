@@ -249,7 +249,7 @@ export default {
       this.formdata = {}
       this.dialogFormVisibleAdd = true
     },
-    // 清空时获取所有用户
+    // 搜索框点击叉号 - 清空时获取所有用户
     getAllUsers () {
       // 此时query值为空字符串
       this.getTableData()
@@ -268,12 +268,13 @@ export default {
       this.pagesize = val
       this.getTableData()
     },
+    // 根据新页码发送请求
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
-      // 根据新页码发送请求
       this.pagenum = val
       this.getTableData()
     },
+    // 获取列表数据
     async getTableData () {
       const AUTH_TOKEN = localStorage.getItem('token')
       //   console.log(AUTH_TOKEN)
