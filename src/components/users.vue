@@ -20,7 +20,7 @@
         <!-- 表格
         el-table-column 控制列
         lable 控制表头
-        prop的值控制的是该列中每一行单元格的内容
+        prop的值控制的是该列中每一个单元格的内容
         -->
         <el-table :data="list" style="width: 100%">
             <el-table-column prop="id" label="#" width="80">
@@ -276,9 +276,9 @@ export default {
     },
     // 获取列表数据
     async getTableData () {
-      const AUTH_TOKEN = localStorage.getItem('token')
-      //   console.log(AUTH_TOKEN)
-      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+      // const AUTH_TOKEN = localStorage.getItem('token')
+      // //   console.log(AUTH_TOKEN)
+      // this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
       const res = await this.$http.get(
         `users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${
           this.pagesize
