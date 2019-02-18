@@ -38,7 +38,6 @@
             </el-table-column>
             <el-table-column prop="roleDesc" label="角色描述" width="200">
             </el-table-column>
-
             <el-table-column label="操作" width="300">
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
@@ -49,10 +48,20 @@
         </el-table>
         <!-- 对话框 -->
         <el-dialog title="分配权限" :visible.sync="dialogFormVisible">
-            <span>hahhahh</span>
+            <!-- node-key 每个节点唯一标识，值来源于treedata中的key名 -->
+            <el-tree 
+            ref="treeDom" 
+            :data="treedata" 
+            show-checkbox 
+            node-key="id" 
+            default-expand-all 
+            :default-checked-keys="arrCheck" 
+            :props="defaultProps">
+            </el-tree>
+
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="setRights()">确 定</el-button>
             </div>
         </el-dialog>
     </el-card>
@@ -63,7 +72,20 @@ export default {
   data() {
     return {
       roles: [],
-      dialogFormVisible : false
+      dialogFormVisible: false,
+      // 树形结构绑定的数据
+      treedata: [],
+      //   默认展开的数据【被展开的节点id】
+      //   arrExpand: [],
+      //   默认选中的数据【被选中的节点id】
+      arrCheck: [],
+      //   lable和children的值来源于树形结构绑定数据treedata中的key名
+      defaultProps: {
+        label: "authName",
+        children: "children"
+      },
+      // 当前角色id
+      currRoleId:-1
     };
   },
   created() {
@@ -88,9 +110,52 @@ export default {
       }
     },
     // 点击√，显示权限对话框
-    showDiaSetRights() {
-        this.dialogFormVisible = true
+    async showDiaSetRights(role) {
+        console.log(role)
+        this.currRoleId = role.id
+      this.dialogFormVisible = true;
+      // 获取所有权限
+      const res = await this.$http.get(`rights/tree`);
+      // console.log(res)
+      const { meta: { msg, status }, data } = res.data;
+      if (status === 200) {
+        this.treedata = data;
+      }
+    
+      // 获取当前角色所有id
+      // 获取treedata中的所有节点id
+      const temp = []
+      role.children.forEach(item1 => {
+        //   temp.push(item1.id)
+          item1.children.forEach(item2 => {
+            //   temp.push(item2.id)
+              item2.children.forEach(item3 => {
+                  temp.push(item3.id)
+              })
+          })
+      })
+    //   console.log(temp)
+      this.arrCheck = temp
     },
+    // 分配权限
+    async setRights() {
+        // // // 获取树形结构中的全选id
+        const arr1 = this.$refs.treeDom.getCheckedKeys()
+        // console.log(arr1)
+        // 获取树形结构中的半选id
+        const arr2 = this.$refs.treeDom.getHalfCheckedKeys()
+        // console.log(arr2)
+        // ES6 展开操作运算符
+        const arr = [...arr1,...arr2]
+        const res = await this.$http.post(`roles/${this.currRoleId}/rights`,{rids:arr.join(',')})
+        // console.log(res)
+        if (res.data.meta.status === 200){
+            this.dialogFormVisible = false
+            this.getRoles()
+        }
+    },
+    
+    // 获取表格数据
     async getRoles() {
       const res = await this.$http.get(`roles`);
       //   console.log(res)
