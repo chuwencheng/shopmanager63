@@ -47,6 +47,14 @@
                 </template>
             </el-table-column>
         </el-table>
+        <!-- 对话框 -->
+        <el-dialog title="分配权限" :visible.sync="dialogFormVisible">
+            <span>hahhahh</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-card>
 </template>
 
@@ -54,7 +62,8 @@
 export default {
   data() {
     return {
-      roles: []
+      roles: [],
+      dialogFormVisible : false
     };
   },
   created() {
@@ -62,29 +71,31 @@ export default {
   },
   methods: {
     // 点击×，删除权限
-    async deleRights(role,rights) {
-        // console.log(role,rights)
-        const res = await this.$http.delete(`roles/${role.id}/rights/${rights.id}`)
-        const {meta:{msg,status},data} = res.data
-        // console.log(data)// data是剩余权限
-        if (status === 200) {
-            // 提示信息
-            this.$message.success(msg)
-            // 更新
-            // this.getRoles()
-            // 优化 - 只更新当前角色权限
-            role.children = data
-        }
+    async deleRights(role, rights) {
+      // console.log(role,rights)
+      const res = await this.$http.delete(
+        `roles/${role.id}/rights/${rights.id}`
+      );
+      const { meta: { msg, status }, data } = res.data;
+      // console.log(data)// data是剩余权限
+      if (status === 200) {
+        // 提示信息
+        this.$message.success(msg);
+        // 更新
+        // this.getRoles()
+        // 优化 - 只更新当前角色权限
+        role.children = data;
+      }
     },
     // 点击√，显示权限对话框
     showDiaSetRights() {
-
+        this.dialogFormVisible = true
     },
     async getRoles() {
       const res = await this.$http.get(`roles`);
       //   console.log(res)
       this.roles = res.data.data;
-    //   console.log(this.roles);
+      //   console.log(this.roles);
     }
   }
 };
