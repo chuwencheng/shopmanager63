@@ -20,7 +20,7 @@
         <!-- 表格
         el-table-column 控制列
         lable 控制表头
-        prop的值控制的是该列中每一个单元格的内容
+        prop的值控制的是该列中每一行单元格的内容
         -->
         <el-table :data="list" style="width: 100%">
             <el-table-column prop="id" label="#" width="80">
