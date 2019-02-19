@@ -27,7 +27,7 @@ export default {
     // 登录请求
     async handlelogin () {
       const res = await this.$http.post(`login`, this.formdata)
-      console.log(res)
+      // console.log(res)
       // 前提：api-server 必须是启动状态
       // console.log(res)
       const { data: { data: { token }, meta: { msg, status } } } = res

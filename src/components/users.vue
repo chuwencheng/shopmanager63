@@ -121,9 +121,9 @@ export default {
   data () {
     return {
       query: '',
-      pagenum: 1,
+      pagenum: 2,
       pagesize: 2,
-      total: -1,
+      total: 1,
       list: [],
       // 对话框
       dialogFormVisibleAdd: false,
@@ -150,7 +150,7 @@ export default {
     // 分配角色-修改角色
     async setRole () {
       const res = await this.$http.put(`users/${this.currUserId}/role`, {rid: this.selectVal})
-      console.log(res)
+      //   console.log(res)
       const {meta: {msg, status}} = res.data
       if (status === 200) {
         // 关闭对话框
@@ -166,7 +166,7 @@ export default {
       this.dialogFormVisibleRole = true
       // 获取所有角色名称
       const res = await this.$http.get(`roles`)
-      //   console.log(res)
+      // console.log(res)
       const {data, meta: {status}} = res.data
       if (status === 200) {
         this.roles = data
@@ -174,7 +174,7 @@ export default {
       }
       // 获取当前用户的角色id
       const res2 = await this.$http.get(`users/${user.id}`)
-      //   console.log(res2)
+      // console.log(res2)
       this.selectVal = res2.data.data.rid
     },
     // 修改用户状态
@@ -239,7 +239,7 @@ export default {
     async addUser () {
       // 获取表单数据
       const res = await this.$http.post(`users`, this.formdata)
-      console.log(res)
+      // console.log(res)
       this.getTableData()
       // 关闭对话框
       this.dialogFormVisibleAdd = false
@@ -249,7 +249,7 @@ export default {
       this.formdata = {}
       this.dialogFormVisibleAdd = true
     },
-    // 清空时获取所有用户
+    // 搜索框点击叉号 - 清空时获取所有用户
     getAllUsers () {
       // 此时query值为空字符串
       this.getTableData()
@@ -268,16 +268,17 @@ export default {
       this.pagesize = val
       this.getTableData()
     },
+    // 根据新页码发送请求
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
-      // 根据新页码发送请求
       this.pagenum = val
       this.getTableData()
     },
+    // 获取列表数据
     async getTableData () {
-      const AUTH_TOKEN = localStorage.getItem('token')
-      //   console.log(AUTH_TOKEN)
-      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+      // const AUTH_TOKEN = localStorage.getItem('token')
+      // //   console.log(AUTH_TOKEN)
+      // this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
       const res = await this.$http.get(
         `users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${
           this.pagesize
