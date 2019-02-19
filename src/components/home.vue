@@ -58,11 +58,12 @@ export default {
   },
   // 登录权限，如果用户没有登录不能进入home.vue,显示login.vue
   beforeMount() {
-    if (!localStorage.getItem("token")) {
-      this.$router.push({
-        name: "login"
-      });
-    }
+    // 路由的导航守卫完成了判断，所有这段代码注释掉
+    // if (!localStorage.getItem("token")) {
+    //   this.$router.push({
+    //     name: "login"
+    //   });
+    // }
   },
   created() {
     this.getMenus();
