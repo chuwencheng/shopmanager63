@@ -166,7 +166,7 @@ export default {
       this.dialogFormVisibleRole = true
       // 获取所有角色名称
       const res = await this.$http.get(`roles`)
-      console.log(res)
+      // console.log(res)
       const {data, meta: {status}} = res.data
       if (status === 200) {
         this.roles = data
@@ -174,7 +174,7 @@ export default {
       }
       // 获取当前用户的角色id
       const res2 = await this.$http.get(`users/${user.id}`)
-      console.log(res2)
+      // console.log(res2)
       this.selectVal = res2.data.data.rid
     },
     // 修改用户状态
@@ -239,7 +239,7 @@ export default {
     async addUser () {
       // 获取表单数据
       const res = await this.$http.post(`users`, this.formdata)
-      console.log(res)
+      // console.log(res)
       this.getTableData()
       // 关闭对话框
       this.dialogFormVisibleAdd = false

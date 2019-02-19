@@ -68,29 +68,29 @@ export default {
     this.getMenus();
   },
   methods: {
-    // 获取左侧菜单
+    // 动态获取左侧菜单
     async getMenus() {
-      const res = await this.$http.get(`menus`);
+      const res = await this.$http.get(`menus`)
       // console.log(res)
-      const { meta: { msg, status }, data } = res.data;
+      const { meta: { msg, status }, data } = res.data
       if (status === 200) {
-        this.menus = data;
-        console.log(this.menus)
+        this.menus = data
+        // console.log(this.menus)
       }
     },
     // 退出
-    handleLoginout() {
+    handleLoginout () {
       // 1.清除token
-      localStorage.clear();
+      localStorage.clear()
       // 2.跳转到login
       this.$router.push({
         name: "login"
       });
       // 提示
-      this.$message.warning("退出成功");
+      this.$message.warning("退出成功")
     }
   }
-};
+}
 </script>
 
 <style>
@@ -102,9 +102,6 @@ export default {
   text-align: center;
   line-height: 60px;
 }
-/* .aside {
-  background: red;
-} */
 .aside .menu {
   height: 100%;
 }
