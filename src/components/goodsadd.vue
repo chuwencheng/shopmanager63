@@ -72,7 +72,7 @@
                     <el-form-item>
                         <el-button @click="addGoods()">添加商品</el-button>
                         <!-- vue项目富文本 -->
-                        <quill-editor v-model="form.goods_introduce" class="quill"></quill-editor>    
+                        <quill-editor v-model="form.goods_introduce" class="quill"></quill-editor>
                     </el-form-item>
                 </el-tab-pane>
             </el-tabs>
@@ -110,7 +110,7 @@ export default {
         goods_weight: "",
         goods_number: "",
         goods_introduce: "",
-        
+
         goods_cat: "",
         pics: [],
         attrs: []
@@ -149,9 +149,9 @@ export default {
           // 提示
           this.$message.error("请先选择三级分类！");
           if (this.active === "2") {
-              this.arrDy = []
+            this.arrDy = [];
           } else {
-              this.arrStatic = []
+            this.arrStatic = [];
           }
           return;
         }
@@ -180,7 +180,7 @@ export default {
           }
         }
         if (this.active === "3") {
-          // 获取动态数据;
+          // 获取静态数据;
           const res = await this.$http.get(
             `categories/${this.selectedOptions[2]}/attributes?sel=only`
           );
@@ -193,7 +193,7 @@ export default {
         }
       }
     },
-    // 获取级联三级分类数据
+    // 获取三级联动分类数据
     async getGoodsCate() {
       const res = await this.$http.get(`categories?type=3`);
       //   console.log(res)
@@ -207,78 +207,78 @@ export default {
     handleChange() {},
     // 图片假上传成功调用
     handleSuccess(res, file, fileList) {
-    //   console.log("success----");
-    //   console.log(res);
+      //   console.log("success----");
+      //   console.log(res);
       //   res.data.data.tmp_path
       this.form.pics.push({
-          pic: res.data.tmp_path
-      })
-    //   console.log(this.form.pics)
+        pic: res.data.tmp_path
+      });
+      //   console.log(this.form.pics)
     },
     // 图片移除成功调用
     handleRemove(file, fileList) {
-        // 处理请求体中的pics: []
-        // 方法一 ：map方法
-        // const Index = this.form.pics.map((item)=>{
-        //     return item.pic === file.response.data.tmp_path
-        // })
-        // 方法二：findIndex 快速找下标ES6
-        const Index = this.form.pics.findIndex(item=>{
-            return item.pic === file.response.data.tmp_path
-        })
-        this.form.pics.splice(Index,1)
-        // console.log(this.form.pics)
+      // 处理请求体中的pics: []
+      // 方法一 ：map方法
+      // const Index = this.form.pics.map((item)=>{
+      //     return item.pic === file.response.data.tmp_path
+      // })
+      // 方法二：findIndex 快速找下标ES6
+      const Index = this.form.pics.findIndex(item => {
+        return item.pic === file.response.data.tmp_path;
+      });
+      this.form.pics.splice(Index, 1);
+      // console.log(this.form.pics)
 
-    //   console.log("remove----");
-    //   console.log(file.response.data.tmp_path);
+      //   console.log("remove----");
+      //   console.log(file.response.data.tmp_path);
     },
     // 最后-添加商品
     async addGoods() {
-        // 处理请求体中的goods_cat
-        this.form.goods_cat = this.selectedOptions.join(",")
-        // 处理请求体中的attrs 商品的参数数组 可以为空 [{attr_id:?,attr_value:?}]
-        
-        // 方法一：1.处理动态数据
-        // 可以遍历+return结果并添加到数组的方法 =》forEach
-        // const obj1 = {attr_id:"",attr_value:""}
-        // const arr1 = []
-        // this.arrDy.forEach(item => {
-        //     obj1.attr_id = item.attr_id
-        //     obj1.attr_value = item.attr_vals
-        //     arr1.push(obj1)
-        // })
-        // 2.处理静态数据
-        // const obj2 = {attr_id:"",attr_value:""}
-        // const arr2 = []
-        // this.arrStatic.forEach(item => {
-        //     obj2.attr_id = item.attr_id
-        //     obj2.attr_value = item.attr_vals
-        //     arr2.push(obj2)
-        // })
-        // 方法二：处理动态数据
-        const arr1 = this.arrDy.map(item => {
-            return {attr_id: item.attr_id,attr_value: item.attr_vals}
-        })
-        // 处理静态数据
-        const arr2 = this.arrStatic.map(item => {
-            return {attr_id: item.attr_id,attr_value: item.attr_vals}
-        })
-        // console.log(arr1)
-        // console.log(arr2)
-        this.form.attrs = [...arr1,...arr2]
-        console.log(this.form)
+      // 处理请求体中的goods_cat
+      this.form.goods_cat = this.selectedOptions.join(",");
+      // 处理请求体中的attrs 商品的参数数组 可以为空 [{attr_id:?,attr_value:?}]
 
-        const res = await this.$http.post(`goods`,this.form);
-        // console.log(res)
-        const {meta:{msg,status},data} = res.data
-        if (status === 201) {
-            // 刷新列表
-            this.$router.push({
-                name: "goods"
-            })
-        } else {
-            this.$message.error(msg)
-        }
+      // 方法一：1.处理动态数据
+      // 可以遍历+return结果并添加到数组的方法 =》forEach
+      // const obj1 = {attr_id:"",attr_value:""}
+      // const arr1 = []
+      // this.arrDy.forEach(item => {
+      //     obj1.attr_id = item.attr_id
+      //     obj1.attr_value = item.attr_vals
+      //     arr1.push(obj1)
+      // })
+      // 2.处理静态数据
+      // const obj2 = {attr_id:"",attr_value:""}
+      // const arr2 = []
+      // this.arrStatic.forEach(item => {
+      //     obj2.attr_id = item.attr_id
+      //     obj2.attr_value = item.attr_vals
+      //     arr2.push(obj2)
+      // })
+      // 方法二：处理动态数据
+      const arr1 = this.arrDy.map(item => {
+        return { attr_id: item.attr_id, attr_value: item.attr_vals };
+      });
+      // 处理静态数据
+      const arr2 = this.arrStatic.map(item => {
+        return { attr_id: item.attr_id, attr_value: item.attr_vals };
+      });
+      // console.log(arr1)
+      // console.log(arr2)
+      this.form.attrs = [...arr1, ...arr2];
+      console.log(this.form);
+
+      const res = await this.$http.post(`goods`, this.form);
+      // console.log(res)
+      const { meta: { msg, status }, data } = res.data;
+      if (status === 201) {
+        // 刷新列表
+        this.$router.push({
+          name: "goods"
+        });
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
@@ -299,7 +299,8 @@ export default {
   height: 400px;
   overflow: auto;
 }
-.ql-container,.ql-snow{
-    min-height: 200px;
+.ql-container,
+.ql-snow {
+  min-height: 200px;
 }
 </style>
