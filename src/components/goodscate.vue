@@ -18,14 +18,7 @@
         <!-- 级联选择器 (表单元素) -->
         <el-form-item label="分类" :label-width="formLabelWidth">
           {{selectedOptions}}
-          <el-cascader
-            expand-trigger="hover"
-            change-on-select
-            clearable
-            :options="caslist"
-            v-model="selectedOptions"
-            :props="defaultProp"
-          ></el-cascader>
+          <el-cascader expand-trigger="hover" change-on-select clearable :options="caslist" v-model="selectedOptions" :props="defaultProp"></el-cascader>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -38,21 +31,15 @@
     <el-table height="450" :data="list" style="width: 100%">
       <!-- 树形列
       之前能用的树形,这里也能用 prop/label/width等
+      prop->每个cat_name
+      label->表头
       treeKey->每个节点唯一标识
       parentKey->父级数据的key名
       levelKey->自己的层级
       childKey->子级数据的key名
       expandAll->默认全展开
       -->
-      <el-tree-grid
-        prop="cat_name"
-        treeKey="cat_id"
-        parentKey="cat_pid"
-        levelKey="cat_level"
-        childKey="children"
-        label="商品分类"
-        width="140"
-      ></el-tree-grid>
+      <el-tree-grid prop="cat_name" label="商品分类" width="140" treeKey="cat_id" parentKey="cat_pid" levelKey="cat_level" childKey="children"></el-tree-grid>
 
       <el-table-column label="级别">
         <template slot-scope="scope">
@@ -78,15 +65,7 @@
     </el-table>
 
     <!-- 分页 -->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="pagenum"
-      :page-sizes="[5, 10, 15,20]"
-      :page-size="pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[5, 10, 15,20]" :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
   </el-card>
 </template>
 
@@ -99,12 +78,15 @@ export default {
     // el-tree-grid
     ElTreeGrid
   },
+
   data() {
     return {
       list: [],
       pagenum: 1,
       pagesize: 10,
+
       total: 1,
+
       dialogFormVisibleAdd: false,
       form: {
         cat_pid: -1,
@@ -134,28 +116,26 @@ export default {
       // cat_pid: -1, 父id
       // cat_level: -1 当前层级
 
-      // 如果没选择分类 -> 添加一级分类
+      // 处理请求体
+      // 如果没有选择分类-->添加的是一级分类
       if (this.selectedOptions.length === 0) {
         this.form.cat_pid = 0;
         this.form.cat_level = 0;
       }
-
-      // 如果选了一个分类 -> 添加的是二级分类
+      // 如果选择的是一个分类-->添加的是二级分类
       if (this.selectedOptions.length === 1) {
         this.form.cat_pid = this.selectedOptions[0];
         this.form.cat_level = 1;
       }
-      // 如果选了两个分类,->添加三级分类
+      // 如果选择的是两个分类-->添加的是三级分类
       if (this.selectedOptions.length === 2) {
         this.form.cat_pid = this.selectedOptions[1];
         this.form.cat_level = 2;
       }
 
       const res = await this.$http.post(`categories`, this.form);
-      console.log(res);
-      const {
-        meta: { msg, status }
-      } = res.data;
+      // console.log(res);
+      const { meta: { msg, status }, data } = res.data;
       if (status === 201) {
         this.dialogFormVisibleAdd = false;
         this.getGoodsCate();
@@ -175,10 +155,9 @@ export default {
       const res = await this.$http.get(
         `categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
       );
-      // console.log(res)
+      // console.log(res);
       this.list = res.data.data.result;
-      console.log(this.list);
-
+      // console.log(this.list);
       this.total = res.data.data.total;
     },
 

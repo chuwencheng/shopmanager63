@@ -11,6 +11,7 @@ import Roles from '@/components/roles.vue'
 import Goodslist from '@/components/goodslist.vue'
 import Goodsadd from '@/components/goodsadd.vue'
 import Cateparams from '@/components/cateparams.vue'
+import Goodscate from '@/components/goodscate.vue'
 
 Vue.use(Router)
 
@@ -35,18 +36,22 @@ const router = new Router({
       name: 'roles',
       path: '/roles',
       component: Roles
-    },{
+    }, {
       name: 'goods',
       path: '/goods',
       component: Goodslist
-    },{
+    }, {
       name: 'goodsadd',
       path: '/goodsadd',
       component: Goodsadd
-    },{
+    }, {
       name: 'params',
       path: '/params',
       component: Cateparams
+    }, {
+      name: 'categories',
+      path: '/categories',
+      component: Goodscate
     }]
   }]
 })
