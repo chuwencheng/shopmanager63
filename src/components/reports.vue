@@ -1,11 +1,11 @@
 
 <template>
-    <el-card class="box">
-        <!-- 面包屑 -->
-        <cus-bread level1="数据统计" level2="数据报表"></cus-bread>
-        <!-- 提供容器 -->
-        <div id="main" style="width: 600px;height:400px;"></div>
-    </el-card>
+  <el-card class="box">
+    <!-- 面包屑 -->
+    <cus-bread level1="数据统计" level2="数据报表"></cus-bread>
+    <!-- 提供容器 -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+  </el-card>
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
 
       // 请求数据
       const res = await this.$http.get(`reports/type/1`);
-      //   console.log(res);
+      // console.log(res);
       const option2 = res.data.data;
 
       // 指定图表的配置项和数据
