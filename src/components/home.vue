@@ -25,7 +25,7 @@
                     :router 开启路由模式
                     开启后, 设置el-menu-item的index值 为路由标识
                     -->
-                    <el-menu default-active="2-1" class="menu" :unique-opened="true" :router="true">
+                    <el-menu @select="fn" :default-active="$route.name" class="menu" :unique-opened="true" :router="true">
                         <!-- 用户管理-->
                         <el-submenu :index="item1.order +'' " v-for="(item1,i) in menus" :key="item1.id">
                             <template slot="title">
@@ -69,29 +69,33 @@ export default {
     this.getMenus();
   },
   methods: {
+    // 菜单默认展开
+    fn(index, indexPath) {
+      //   console.log(this.$route.name);
+    },
     // 动态获取左侧菜单
     async getMenus() {
-      const res = await this.$http.get(`menus`)
+      const res = await this.$http.get(`menus`);
       // console.log(res)
-      const { meta: { msg, status }, data } = res.data
+      const { meta: { msg, status }, data } = res.data;
       if (status === 200) {
-        this.menus = data
+        this.menus = data;
         // console.log(this.menus)
       }
     },
     // 退出
-    handleLoginout () {
+    handleLoginout() {
       // 1.清除token
-      localStorage.clear()
+      localStorage.clear();
       // 2.跳转到login
       this.$router.push({
         name: "login"
       });
       // 提示
-      this.$message.warning("退出成功")
+      this.$message.warning("退出成功");
     }
   }
-}
+};
 </script>
 
 <style>
